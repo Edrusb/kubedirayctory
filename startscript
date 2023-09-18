@@ -44,7 +44,7 @@ case "$ROLE" in
 	   sleep 2
 	done
 	source $HOME/ray/bin/activate
-	while ! ray start --address="$HEADNODE" &>> /tmp/ray.log ; do
+	while ! ray start --address="$HEADNODE_NAME:$RAY_PORT" &>> /tmp/ray.log ; do
 	    echo "Ray head should be ready soon, retrying connection in 2 s"
 	    sleep 2
 	done
