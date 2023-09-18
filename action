@@ -1,0 +1,13 @@
+#!/bin/bash
+
+#if [ -z $ROOT_PASSWORD ] ; then
+#    export ROOT_PASSWORD=toto
+#    echo "NO ROOT_PASSWORD env variable set, using default password for root"
+#else
+#    echo "Using root password from environement: $ROOT_PASSWORD"
+#fi
+
+# echo "root:${ROOT_PASSWORD}" | chpasswd
+
+mkdir -p /run/sshd
+exec /usr/sbin/sshd -D

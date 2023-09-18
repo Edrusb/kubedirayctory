@@ -1,0 +1,64 @@
+apiVersion: kubedirector.hpe.com/v1beta1
+kind: KubeDirectorApp
+metadata:
+  name: raycluster
+spec:
+  label:
+    name: ray cluster
+    description: ray cluster on kubernetes instantiated from kubedirector
+  distroID: edrusb/ray
+  version: '1.7.0'
+  configSchemaVersion: 7
+  defaultImageRepoTag: docker.io/edrusb/ray:1.7
+  defaultConfigPackage:
+      packageURL: file:///root/appconfig.tgz
+  roles:
+  - id: headnode
+    cardinality: '1'
+    eventList:
+    - "configure"
+    - "addnodes"
+    - "delnodes"
+  - id: worker-type-1
+    cardinality: '0+'
+    eventList:
+    - "configure"
+    - "addnodes"
+    - "delnodes"
+  - id: worker-type-2
+    cardinality: '0+'
+    eventList:
+    - "configure"
+    - "addnodes"
+    - "delnodes"
+  services:
+  - id: dashboard
+    label:
+      name: "Ray Dashboard"
+    endpoint:
+      port: 8265
+      isDashboard: True
+      urlScheme: http
+  - id: connect-port
+    label:
+       name: "Connect Port"
+    endpoint:
+       port: 10001
+       urlScheme: "ray"
+       path: "ray.init(\"ray://IP:port\")"
+       isDashboard: False
+  config:
+    selectedRoles:
+    - headnode
+    - worker-type-1
+    - worker-type-2
+    roleServices:
+    - roleID: headnode
+      serviceIDs:
+      - dashboard
+      - connect-port
+  capabilities:
+  - SYS_RESOURCE
+  - IPC_LOCK
+  systemdRequired: false
+  logoURL: file:///root/ray-logo.png
