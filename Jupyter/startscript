@@ -1,8 +1,14 @@
 #!/bin/bash
 
+# if tenant data tap is enabled
+if [ -d /bd-fs-mnt ] ; then
+    cd /home/jovyan
+    ln -s /bd-fs-mnt/* .
+fi
+
 CLUSTERCONFIG=/etc/guestconfig/configmeta.json
 
 AUTHTOKEN=$(jq '.nodegroups."1".roles.jupyterlab.services.web.authToken' "$CLUSTERCONFIG" | sed -r -e 's#^"##' -e 's#"$##')
 
 su - jovyan -c "source /opt/ray/bin/activate && /opt/ray/bin/jupypass \"$AUTHTOKEN\" "
-exec su - jovyan -c "source /opt/ray/bin/activate && jupyter lab --ip=0.0.0.0"
+exec su - jovyan -c "source /opt/ray/bin/activate && jupyter lab --ip=0.0.0.0 &"

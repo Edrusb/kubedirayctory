@@ -3,7 +3,7 @@ help:
 	@echo "make VER=1.8 build push"
 
 build:
-	docker build -t edrusb/raycluster:$(VER) .
+	docker build -t edrusb/ray:$(VER) .
 
-push:
-	docker push edrusb/raycluster:$(VER)
+push: build
+	docker push edrusb/ray:$(VER)

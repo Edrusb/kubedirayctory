@@ -58,6 +58,10 @@ RUN rm -rf /root/appconfig
 COPY ray-logo.png /root
 RUN chmod 0640 /root/ray-logo.png
 
+
+# installing scikit-learn
+RUN . $HOME/ray/bin/activate && pip install -U scikit-learn
+
 EXPOSE "$HEAD_PORT"
 EXPOSE "$RAY_OBJECT_MANAGER_PORT"
 EXPOSE "$RAY_NODE_MANAGER_PORT"
