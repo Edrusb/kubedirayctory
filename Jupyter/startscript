@@ -1,3 +1,8 @@
 #!/bin/bash
 
-/bin/true
+CLUSTERCONFIG=/etc/guestconfig/configmeta.json
+
+AUTHTOKEN=$(jq '.nodegroups."1".roles.jupyterlab.services.web.authToken' "$CLUSTERCONFIG" | sed -r -e 's#^"##' -e 's#"$##')
+
+su - jovyan -c "source /opt/ray/bin/activate && /opt/ray/bin/jupypass \"$AUTHTOKEN\" "
+exec su - jovyan -c "source /opt/ray/bin/activate && jupyter lab --ip=0.0.0.0"

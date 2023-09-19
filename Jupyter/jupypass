@@ -1,0 +1,9 @@
+#!/usr/bin/expect -f
+
+set PASS [ lindex $argv 0]
+spawn jupyter lab password
+expect  "Enter password:"
+send -- "$PASS\n"
+expect "Verify password:"
+send -- "$PASS\n"
+expect eof

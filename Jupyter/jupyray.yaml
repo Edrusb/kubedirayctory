@@ -7,16 +7,16 @@ spec:
     name: Jupyray
     description: jupyter lab with ray client
   distroID: edrusb/ray
-  version: '0.3'
+  version: '0.4'
   configSchemaVersion: 7
-  defaultImageRepoTag: docker.io/edrusb/jupyray:0.3
+  defaultImageRepoTag: docker.io/edrusb/jupyray:0.4
   defaultConfigPackage:
     packageURL: file:///root/appconfig.tgz
   roles:
   - id: jupyterlab
     cardinality: '1'
     persistDirs:
-    - "/home/joyan"
+    - "/home/jovyan"
     eventList:
     - "configure"
     - "addnodes"
@@ -29,6 +29,7 @@ spec:
       port: 8888
       isDashboard: True
       urlScheme: http
+      hasAuthToken: True
   config:
     selectedRoles:
     - jupyterlab

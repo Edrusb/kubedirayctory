@@ -26,6 +26,7 @@ RUN . /opt/ray/bin/activate && pip install -U ipywidgets
 RUN . /opt/ray/bin/activate && pip install jq
 
 # installing Jupyterlab
+ENV JUPYTER_ENABLE_LAB yes
 RUN . /opt/ray/bin/activate && pip install jupyterlab
 
 # non root user setup
@@ -56,6 +57,13 @@ RUN chmod 0755 /root/appconfig/startscript
 RUN tar -C /root -czf /root/appconfig.tgz appconfig
 RUN rm -rf /root/appconfig
 
+# jupyter is replaced by ssh for pod start as authkey is known later
+RUN apt-get install openssh-server -y
+RUN apt-get install expect -y
+COPY jupypass /opt/ray/bin
+RUN chmod 0755 /opt/ray/bin/jupypass
+
 EXPOSE 8888
+EXPOSE 22
 
 CMD [ "/root/action" ]
