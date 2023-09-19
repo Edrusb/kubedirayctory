@@ -4,12 +4,14 @@ metadata:
   name: jupyray
 spec:
   label:
-    name: edrusb/jupyray
+    name: Jupyray
     description: jupyter lab with ray client
   distroID: edrusb/ray
-  version: '0.1'
+  version: '0.3'
   configSchemaVersion: 7
-  defaultImageRepoTag: docker.io/edrusb/jupyray:0.1
+  defaultImageRepoTag: docker.io/edrusb/jupyray:0.3
+  defaultConfigPackage:
+    packageURL: file:///root/appconfig.tgz
   roles:
   - id: jupyterlab
     cardinality: '1'

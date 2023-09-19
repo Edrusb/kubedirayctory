@@ -22,13 +22,16 @@ RUN apt-get install openssh-server -y
 # installing Ray
 RUN python3 -m venv /opt/ray
 RUN . /opt/ray/bin/activate && pip install -U "ray[all]"
+RUN . /opt/ray/bin/activate && pip install -U ipywidgets
+RUN . /opt/ray/bin/activate && pip install jq
 
 # installing Jupyterlab
 RUN . /opt/ray/bin/activate && pip install jupyterlab
 
 # non root user setup
 RUN groupadd lab
-RUN useradd -g lab -c "jupyter lab user" -u 1000 -m jovyan
+RUN useradd -g lab -c "jupyter lab user" -u 1000 -M jovyan
+RUN mkdir /home/jovyan && chown jovyan:lab /home/jovyan
 RUN chsh jovyan -s /bin/bash
 
 # allowing members of group lab to install anything in the venv "ray"
@@ -38,6 +41,20 @@ RUN chgrp -R lab /opt/ray
 # getting ready to run jupyterlab
 COPY action /root/action
 RUN chmod a+x /root/action
+
+## needed by kubedirector: curl python (2 or 3) tar rsync and bash
+RUN apt-get install curl -y
+RUN apt-get install tar -y
+RUN apt-get install rsync -y
+RUN apt-get install bash -y
+RUN cd /usr/bin && ln -s python3 python
+
+# the "startscript" analyses the cluster conf and launches ray either as head or worker
+RUN mkdir /root/appconfig
+COPY startscript /root/appconfig
+RUN chmod 0755 /root/appconfig/startscript
+RUN tar -C /root -czf /root/appconfig.tgz appconfig
+RUN rm -rf /root/appconfig
 
 EXPOSE 8888
 
