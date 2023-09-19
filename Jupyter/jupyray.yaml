@@ -1,0 +1,40 @@
+apiVersion: kubedirector.hpe.com/v1beta1
+kind: KubeDirectorApp
+metadata:
+  name: jupyray
+spec:
+  label:
+    name: edrusb/jupyray
+    description: jupyter lab with ray client
+  distroID: edrusb/ray
+  version: '0.1'
+  configSchemaVersion: 7
+  defaultImageRepoTag: docker.io/edrusb/jupyray:0.1
+  roles:
+  - id: jupyterlab
+    cardinality: '1'
+    persistDirs:
+    - "/home/joyan"
+    eventList:
+    - "configure"
+    - "addnodes"
+    - "delnodes"
+  services:
+  - id: web
+    label:
+      name: "jupyter lab"
+    endpoint:
+      port: 8888
+      isDashboard: True
+      urlScheme: http
+  config:
+    selectedRoles:
+    - jupyterlab
+    roleServices:
+    - roleID: jupyterlab
+      serviceIDs:
+      - web
+  capabilities:
+  - SYS_RESOURCE
+  - IPC_LOCK
+  systemdRequired: false

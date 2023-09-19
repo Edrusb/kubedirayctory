@@ -1,0 +1,6 @@
+#!/bin/bash
+
+exec docker run -d -p 8888:8888 -p 8265:8265 --name myjupy --restart=unless-stopped --shm-size=3.8gb -e JUPYTER_ENABLE_LAB=yes edrusb/jupyray:0.1
+
+
+
