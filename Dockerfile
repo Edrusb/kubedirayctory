@@ -1,4 +1,6 @@
 FROM debian:bookworm
+LABEL author=doc.heure@edrusb.org
+LABEL image=edrusb/ray
 
 ENV RAY_PORT=6379
 ENV RAY_OBJECT_MANAGER_PORT=8301
@@ -30,7 +32,7 @@ RUN apt-get install openssh-server -y
 
 # installing Ray
 RUN python3 -m venv $HOME/ray
-RUN . $HOME/ray/bin/activate && pip install -U "ray[default]"
+RUN . $HOME/ray/bin/activate && pip install -U "ray[all]"
 
 ## needed by kubedirector: curl python (2 or 3) tar rsync and bash
 RUN apt-get install curl -y
