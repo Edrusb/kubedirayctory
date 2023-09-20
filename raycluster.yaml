@@ -7,7 +7,7 @@ spec:
     name: ray cluster
     description: ray cluster on kubernetes instantiated from kubedirector
   distroID: edrusb/ray
-  version: '2.0.0'
+  version: '2.0.1'
   configSchemaVersion: 7
   defaultImageRepoTag: docker.io/edrusb/ray:2.0
   defaultConfigPackage:
@@ -15,6 +15,8 @@ spec:
   roles:
   - id: headnode
     cardinality: '1'
+    configPackage:
+      packageURL: file:///root/appconfig.tgz
     eventList:
     - "configure"
     - "addnodes"
