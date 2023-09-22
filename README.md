@@ -21,8 +21,7 @@ All codes and scripts are provided under GPLv3 licensing (see LICENSE file for t
 - go the the **Service Endpoints** tab and open the Ray Dashboard
 - use the *connect port* provided URL in your application when calling ray.init() prepending it with "ray://" for example: *ray.init("ray://gateway.ezmeral.hpe.com:10015")*
 
-The provided Jupyterlab is here as demo to play with cluster. Launch it as previously seen with the ray cluster.
-
+The provided Jupyterlab is here as demo to play with cluster, launch it as previously seen with the ray cluster.  Once available, you'll find a notebook inside the Jupyter lab to explore Ray Core features. For the *Ray Data*, *Ray Train*, *Ray Tune* and other higher level modules, depending on the tool you plan to use (XGBoost, Pytorch, Ternsorflow, Keras...) you'll probably need to add aditional libraries to Ray cluster's nodes and Jupyter Lab, either deriving the existing Docker images or reuinsing the provided Dockerfile, or even live in the pods (for temporarily testing).
 ## Optimization and performances
 Ray uses /dev/shm directory which is usually a tmpfs filesystem (filesystem in RAM) and expects it to be sized to at least 30% of the total RAM available/visible for the POD (which is what you have specified when you created Ray cluster for the header node, worker-type-1 and worker-type-2). If the /dev/shm is smaller than expected, Ray relies on filesystem instead of memory to store objects which has magnitude less performances (check the ray output in */tmp/ray.log* file in each pod of the ray cluster).
 
