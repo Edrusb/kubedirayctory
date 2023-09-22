@@ -1,0 +1,52 @@
+#!/bin/bash
+
+CLUSTERCONFIG=/etc/guestconfig/configmeta.json
+LOGFILE=/tmp/ray.log
+
+HEADNODE=$(jq '.nodegroups."1".roles.headnode.services."connect-port".endpoints[0]' "$CLUSTERCONFIG" | sed -r -e 's#^"ray://##' -e 's#"$##')
+ROLE=$(jq '.node.role_id' "$CLUSTERCONFIG" | sed -r -e 's/"(.*)"/\1/')
+HEADNODE_NAME=$(echo "$HEADNODE" | sed -r -e 's/([^\:]+):.*/\1/')
+
+# we now spawn the ray command depending on the role head/worker
+
+HEADREADY=/root/headready
+
+echo "---------------------------------"
+echo "ROLE=$ROLE"
+echo "HEADNODE=$HEADNODE"
+echo "HEADNODE_NAME=$HEADNODE_NAME"
+echo "---------------------------------"
+
+case "$ROLE" in
+    headnode)
+	source $HOME/ray/bin/activate
+	ray start --head \
+         --port "$RAY_PORT" \
+         --object-manager-port "$RAY_OBJECT_MANAGER_PORT" \
+         --node-manager-port "$RAY_NODE_MANAGER_PORT" \
+         --min-worker-port "$RAY_MIN_WORKER_PORT" \
+         --max-worker-port "$RAY_MAX_WORKER_PORT" \
+         --ray-client-server-port "$RAY_CLIENT_SERVER_PORT" \
+         --dashboard-port "$RAY_DASHBOARD_PORT" \
+         --dashboard-agent-listen-port "$RAY_DASHBOARD_AGENT_LISTEN_PORT" \
+         --dashboard-grpc-port "$RAY_DASHBOARD_GRPC_PORT" \
+         --metrics-export-port "$RAY_METRICS_EXPORT_PORT" \
+         --disable-usage-stats \
+         --dashboard-host 0.0.0.0 &>> "$LOGFILE"
+	touch "$HEADREADY"
+	;;
+    worker*)
+	while [ $(ssh -o "StrictHostKeyChecking=no" "$HEADNODE_NAME" ls -l "$HEADREADY" | wc -l) -eq 0 ] ; do
+	   echo "ray head not yet ready, rechecking in 2 seconds"
+	   sleep 2
+	done
+	source $HOME/ray/bin/activate
+	while ! ray start --address="$HEADNODE_NAME:$RAY_PORT" &>> "$LOGFILE" ; do
+	    echo "Ray head should be ready soon, retrying connection in 2 s"
+	    sleep 2
+	done
+	;;
+    *)
+	echo "unknow role aborting"
+	exit 1
+esac

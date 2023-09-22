@@ -4,53 +4,9 @@ action="$1"
 role="$3"
 csvlist="$5"
 
-CLUSTERCONFIG=/etc/guestconfig/configmeta.json
-LOGFILE=/tmp/ray.log
+# run in background the previous startscript renamed as "background" for kubedirector
+# to launch in parallel the startscript of all roles: head, worker-type-1 and worker-type-2.
+# This sould solve the dead-lock met when the head starscript is not launched waiting for
+# worker to complete their startscript that depend on the head not to be ready.
 
-HEADNODE=$(jq '.nodegroups."1".roles.headnode.services."connect-port".endpoints[0]' "$CLUSTERCONFIG" | sed -r -e 's#^"ray://##' -e 's#"$##')
-ROLE=$(jq '.node.role_id' "$CLUSTERCONFIG" | sed -r -e 's/"(.*)"/\1/')
-HEADNODE_NAME=$(echo "$HEADNODE" | sed -r -e 's/([^\:]+):.*/\1/')
-
-# we now define the ray command depending on the role head/worker and write it to the file $RAY_COMMAND
-
-HEADREADY=/root/headready
-
-echo "---------------------------------"
-echo "ROLE=$ROLE"
-echo "HEADNODE=$HEADNODE"
-echo "HEADNODE_NAME=$HEADNODE_NAME"
-echo "---------------------------------"
-
-case "$ROLE" in
-    headnode)
-	source $HOME/ray/bin/activate
-	ray start --head \
-         --port "$RAY_PORT" \
-         --object-manager-port "$RAY_OBJECT_MANAGER_PORT" \
-         --node-manager-port "$RAY_NODE_MANAGER_PORT" \
-         --min-worker-port "$RAY_MIN_WORKER_PORT" \
-         --max-worker-port "$RAY_MAX_WORKER_PORT" \
-         --ray-client-server-port "$RAY_CLIENT_SERVER_PORT" \
-         --dashboard-port "$RAY_DASHBOARD_PORT" \
-         --dashboard-agent-listen-port "$RAY_DASHBOARD_AGENT_LISTEN_PORT" \
-         --dashboard-grpc-port "$RAY_DASHBOARD_GRPC_PORT" \
-         --metrics-export-port "$RAY_METRICS_EXPORT_PORT" \
-         --disable-usage-stats \
-         --dashboard-host 0.0.0.0 &>> "$LOGFILE"
-	touch "$HEADREADY"
-	;;
-    worker*)
-	while [ $(ssh -o "StrictHostKeyChecking=no" "$HEADNODE_NAME" ls -l "$HEADREADY" | wc -l) -eq 0 ] ; do
-	   echo "ray head not yet ready, rechecking in 2 seconds"
-	   sleep 2
-	done
-	source $HOME/ray/bin/activate
-	while ! ray start --address="$HEADNODE_NAME:$RAY_PORT" &>> "$LOGFILE" ; do
-	    echo "Ray head should be ready soon, retrying connection in 2 s"
-	    sleep 2
-	done
-	;;
-    *)
-	echo "unknow role aborting"
-	exit 1
-esac
+$(dirname "$0")/background &

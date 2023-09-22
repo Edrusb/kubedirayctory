@@ -52,7 +52,9 @@ RUN cp /root/.ssh/id_rsa.pub /root/.ssh/authorized_keys
 # the "startscript" analyses the cluster conf and launches ray either as head or worker
 RUN mkdir /root/appconfig
 COPY startscript /root/appconfig
+COPY background /root/appconfig
 RUN chmod 0755 /root/appconfig/startscript
+RUN chmod 0755 /root/appconfig/background
 RUN tar -C /root -czf /root/appconfig.tgz appconfig
 RUN rm -rf /root/appconfig
 
