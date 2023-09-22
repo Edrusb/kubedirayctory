@@ -18,7 +18,7 @@ All codes and scripts are provided under GPLv3 licensing (see LICENSE file for t
 ## Usage
 - select the Ray application, provide the resources for the *Head node* (CPU, RAM and eventually GPU) select one or more *Worker node*. There is two types of worker to ease having GPU nodes and non GPU nodes, or any different profile combination of nodes, but all worker (type 1 and type 2) have the exact same role in the Ray Cluster
 - wait for the cluster to be created
-- go the the **Servce Endpoints** tab and open the Ray Dashboard
+- go the the **Service Endpoints** tab and open the Ray Dashboard
 - use the *connect port* provided URL in your application when calling ray.init() prepending it with "ray://" for example: *ray.init("ray://gateway.ezmeral.hpe.com:10015")*
 
 The provided Jupyterlab is here as demo to play with cluster. Launch it as previously seen with the ray cluster.
