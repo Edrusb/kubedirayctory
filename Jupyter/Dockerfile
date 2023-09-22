@@ -34,6 +34,8 @@ RUN groupadd lab
 RUN useradd -g lab -c "jupyter lab user" -u 1000 -M jovyan
 RUN mkdir /home/jovyan && chown jovyan:lab /home/jovyan
 RUN chsh jovyan -s /bin/bash
+COPY ray-demo.ipynb /home/jovyan
+RUN chown jovyan:lab /home/jovyan/ray-demo.ipynb
 
 # allowing members of group lab to install anything in the venv "ray"
 RUN find /opt/ray -type d -exec chmod g+w {} \;
