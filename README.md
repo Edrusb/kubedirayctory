@@ -24,4 +24,5 @@ All codes and scripts are provided under GPLv3 licensing (see LICENSE file for t
 The provided Jupyterlab is here as demo to play with cluster. Launch it as previously seen with the ray cluster.
 
 ## Optimization and performances
-Ray uses /dev/shm directory which is usually a tmpfs filesystem (filesystem in RAM) and expects it to be sized to at least 30% of the total RAM available/visible for the POD (what you have specified when you created Ray cluster for the header node, worker-type-1 and worker-type-2. 
+Ray uses /dev/shm directory which is usually a tmpfs filesystem (filesystem in RAM) and expects it to be sized to at least 30% of the total RAM available/visible for the POD (which is what you have specified when you created Ray cluster for the header node, worker-type-1 and worker-type-2). If the /dev/shm is smaller than expected, Ray relies on filesystem instead of memory to store objects which has magnitude less performances (check the ray output in */tmp/ray.log* file in each pod of the ray cluster).
+
