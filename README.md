@@ -8,3 +8,6 @@ This repo contains 2 components:
 
 The docker images are published on docker.io/edrusb/ray and docker.io/edrusb/jupyray but you are provided the Dockerfile for each to rebuid trim and adapt those images in their relative directories (adapt the Makefile to your docker repo or container registry)
 
+## Licensing
+All code and script provided are released under GPLv3 licensing (see LICENSE file for terms and conditions)
+
