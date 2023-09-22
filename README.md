@@ -13,7 +13,7 @@ All codes and scripts are provided under GPLv3 licensing (see LICENSE file for t
 
 ## Installation
 - upload **Cluster/raycluster.yaml** and **Jupyter/jupyray.yaml** kubedirector cluster definitions to HPE Ezmeral Runtime (for example using the *kubectl* tab in the *Applications* menu)
-- From the *kubectl* tab in the GUI, select in turn each yaml file and chose the *create* action (this will create a new card in the list of available applications)
+- From the *kubectl* tab in the GUI, select in turn each yaml file and click the *open* button then the *create* action at the bottom of the page (this will create a new card in the list of available applications)
 
 ## Usage
 - select the Ray application, provide the resources for the *Head node* (CPU, RAM and eventually GPU) select one or more *Worker node*. There is two types of worker to ease having GPU nodes and non GPU nodes, or any different profile combination of nodes, but all worker (type 1 and type 2) have the exact same role in the Ray Cluster
