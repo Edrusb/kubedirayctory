@@ -61,4 +61,3 @@ spec:
   - SYS_RESOURCE
   - IPC_LOCK
   systemdRequired: false
-  logoURL: file:///root/ray-logo.png
