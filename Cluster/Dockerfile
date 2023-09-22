@@ -56,11 +56,6 @@ RUN chmod 0755 /root/appconfig/startscript
 RUN tar -C /root -czf /root/appconfig.tgz appconfig
 RUN rm -rf /root/appconfig
 
-# the logo picture
-COPY ray-logo.png /root
-RUN chmod 0640 /root/ray-logo.png
-
-
 # installing scikit-learn
 RUN . $HOME/ray/bin/activate && pip install -U scikit-learn
 
