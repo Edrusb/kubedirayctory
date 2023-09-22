@@ -1,5 +1,5 @@
 # kubedirayctory
-Ray cluster instantiated from Kubedirectory on Ezmeral Runtime
+Ray cluster instantiated from Kubedirector on Ezmeral Runtime
 
 ## Contents
 This repo contains 2 components:
