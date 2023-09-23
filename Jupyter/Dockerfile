@@ -66,7 +66,7 @@ COPY jupypass /opt/ray/bin
 RUN chmod 0755 /opt/ray/bin/jupypass
 
 # installing scikit-learn
-# RUN . /opt/ray/bin/activate && pip install -U scikit-learn
+RUN . /opt/ray/bin/activate && pip install -U scikit-learn
 
 EXPOSE 8888
 EXPOSE 22
