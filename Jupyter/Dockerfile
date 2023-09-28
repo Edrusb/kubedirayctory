@@ -66,7 +66,9 @@ COPY jupypass /opt/ray/bin
 RUN chmod 0755 /opt/ray/bin/jupypass
 
 # installing scikit-learn
-RUN . /opt/ray/bin/activate && pip install -U scikit-learn
+RUN . /opt/ray/bin/activate && pip install numpy scipy modin
+RUN . /opt/ray/bin/activate && pip install matplotlib pandas seaborn
+RUN . /opt/ray/bin/activate && pip install -U scikit-learn scikit-image
 
 EXPOSE 8888
 EXPOSE 22

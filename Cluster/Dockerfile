@@ -59,7 +59,9 @@ RUN tar -C /root -czf /root/appconfig.tgz appconfig
 RUN rm -rf /root/appconfig
 
 # installing scikit-learn
-RUN . $HOME/ray/bin/activate && pip install -U scikit-learn
+RUN . $HOME/ray/bin/activate && pip install numpy scipy
+RUN . $HOME/ray/bin/activate && pip install matplotlib pandas seaborn modin
+RUN . $HOME/ray/bin/activate && pip install -U scikit-learn scikit-image
 
 EXPOSE "$HEAD_PORT"
 EXPOSE "$RAY_OBJECT_MANAGER_PORT"
