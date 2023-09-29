@@ -1,6 +1,10 @@
 #!/bin/bash
 
-exec docker run -d -p 8888:8888 -p 8265:8265 --name myjupy --restart=unless-stopped --shm-size=3.8gb -e JUPYTER_ENABLE_LAB=yes edrusb/jupyray:0.1
+RAM=$(free -m | sed -rn -e 's/^Mem:\s+([0-9]+)\s+.*/\1/p')
+SHM=$(( $RAM / 3 ))
+echo SHM Size = $SHM
+
+exec docker run -d -p 8888:8888 -p 8265:8265 --name myjupy --restart=unless-stopped --shm-size=${SHM}mb -e JUPYTER_ENABLE_LAB=yes edrusb/jupyray:0.1
 
 
 
