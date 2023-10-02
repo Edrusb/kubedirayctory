@@ -41,18 +41,18 @@ spec:
       urlScheme: http
   - id: connect-port
     label:
-       name: "Connect Port"
+      name: "Connect Port"
     endpoint:
-       port: 10001
-       urlScheme: "ray"
-       path: "ray.init(\"ray://IP:port\")"
-       isDashboard: False
+      port: 10001
+      urlScheme: "ray"
+      path: "ray.init(\"ray://IP:port\")"
+      isDashboard: False
   - id: inference
     label:
-	name: "Inference port"
+       name: "Inference port"
     endpoint:
-        port: 8000
-	isDashboard: False
+       port: 8000
+       isDashboard: False
   config:
     selectedRoles:
     - headnode
