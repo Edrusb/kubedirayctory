@@ -7,9 +7,9 @@ spec:
     name: ray cluster
     description: ray cluster on kubernetes instantiated from kubedirector
   distroID: edrusb/ray
-  version: '2.3.0'
+  version: '3.0.0'
   configSchemaVersion: 7
-  defaultImageRepoTag: docker.io/edrusb/ray:2.3
+  defaultImageRepoTag: docker.io/edrusb/ray:3.0
   defaultConfigPackage:
       packageURL: file:///root/appconfig.tgz
   roles:
@@ -47,6 +47,12 @@ spec:
        urlScheme: "ray"
        path: "ray.init(\"ray://IP:port\")"
        isDashboard: False
+  - id: inference
+    label:
+	name: "Inference port"
+    endpoint:
+        port: 8000
+	isDashboard: False
   config:
     selectedRoles:
     - headnode
@@ -57,6 +63,7 @@ spec:
       serviceIDs:
       - dashboard
       - connect-port
+      - inference
   capabilities:
   - SYS_RESOURCE
   - IPC_LOCK

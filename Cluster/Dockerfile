@@ -1,4 +1,4 @@
-FROM debian:bookworm
+FROM debian:bullseye
 LABEL author=doc.heure@edrusb.org
 LABEL image=edrusb/ray
 
@@ -25,7 +25,7 @@ RUN apt-get install lsb-release -y
 # needed by ray
 RUN apt-get install gcc g++ -y
 RUN apt-get install python3-pip -y
-RUN apt-get install python3.11-venv -y
+RUN apt-get install python3.9-venv -y
 RUN apt-get install pkg-config -y
 RUN apt-get install jq -y
 RUN apt-get install openssh-server -y
