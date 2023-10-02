@@ -1,6 +1,6 @@
 FROM debian:bookworm
 LABEL author=doc.heure@edrusb.org
-LABEL image=edrusb/jupyteraycluster
+LABEL image=edrusb/jupyteray
 
 # OS update
 RUN apt-get update -y
@@ -70,7 +70,10 @@ RUN . /opt/ray/bin/activate && pip install numpy scipy modin
 RUN . /opt/ray/bin/activate && pip install matplotlib pandas seaborn
 RUN . /opt/ray/bin/activate && pip install -U scikit-learn scikit-image
 
+
 EXPOSE 8888
+EXPOSE 8265
+EXPOSE 8000
 EXPOSE 22
 
 CMD [ "/root/action" ]
