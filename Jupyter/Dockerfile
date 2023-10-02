@@ -69,7 +69,7 @@ RUN chmod 0755 /opt/ray/bin/jupypass
 RUN . /opt/ray/bin/activate && pip install numpy scipy modin
 RUN . /opt/ray/bin/activate && pip install matplotlib pandas seaborn
 RUN . /opt/ray/bin/activate && pip install -U scikit-learn scikit-image
-
+RUN . /opt/ray/bin/activate && pip install torch transformers
 
 EXPOSE 8888
 EXPOSE 8265
