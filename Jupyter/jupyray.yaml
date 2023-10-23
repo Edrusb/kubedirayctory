@@ -7,9 +7,9 @@ spec:
     name: Jupyray
     description: jupyter lab with ray client
   distroID: edrusb/ray
-  version: '3.1.0'
+  version: '3.2.0'
   configSchemaVersion: 7
-  defaultImageRepoTag: docker.io/edrusb/jupyray:3.1
+  defaultImageRepoTag: docker.io/edrusb/jupyray:3.2
   defaultConfigPackage:
     packageURL: file:///root/appconfig.tgz
   roles:

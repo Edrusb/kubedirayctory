@@ -70,7 +70,19 @@ RUN . /opt/ray/bin/activate && pip install numpy scipy modin
 RUN . /opt/ray/bin/activate && pip install matplotlib pandas seaborn
 RUN . /opt/ray/bin/activate && pip install -U scikit-learn scikit-image
 RUN . /opt/ray/bin/activate && pip install torch transformers
+RUN apt-get install libyaml-cpp-dev libyaml-dev -y
+RUN . /opt/ray/bin/activate && pip --no-cache-dir install --force-reinstall -I pyyaml
 
+# installing MLflow
+RUN . /opt/ray/bin/activate && pip install mlflow
+RUN . /opt/ray/bin/activate && pip install mysql-connector-python
+RUN apt-get install git -y
+RUN mkdir /home/jovyan/MLflow && chown jovyan:lab /home/jovyan/MLflow
+COPY mlflow-run-ui /home/jovyan/MLflow
+RUN chown jovyan:lab /home/jovyan/MLflow/mlflow-run-ui
+RUN chmod +x /home/jovyan/MLflow/mlflow-run-ui
+
+EXPOSE 5000
 EXPOSE 8888
 EXPOSE 8265
 EXPOSE 8000

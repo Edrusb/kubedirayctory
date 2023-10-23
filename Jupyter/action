@@ -1,5 +1,7 @@
 #!/bin/bash
 
+su - jovyan -c "/home/jovyan/MLflow/mlflow-run-ui localUI &"
+
 mkdir -p /run/sshd
 exec /usr/sbin/sshd -D
 
