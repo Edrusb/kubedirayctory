@@ -1,0 +1,48 @@
+#!/bin/bash
+
+usage()
+{
+    echo "usage: $1 { UI | localUI | GC | localGC | LS | localLS}"
+    echo "    UI : run the user interface on port 5000"
+    echo "    localUI : run the user interface with backend and artifact store on local filesystem"
+    echo "    GC : garbage collector to have deleted items really deleted"
+    echo "    localGC: garbage collector when run as localUI"
+    echo "    LS : list all experiments (included deleted ones)"
+    exit 1
+}
+
+if [ -z "$1" ] ; then
+    usage "$0"
+fi
+
+case "$1" in
+    GC)
+	export MLFLOW_TRACKING_URI=mysql+mysqlconnector://mlflow:mlflow@mariadb.systeme-solaire.espace:3306/mlflow
+	mlflow gc
+	;;
+    localGC)
+	unset MLFLOW_TRACKING_URI
+	mlflow gc
+	;;
+    localUI)
+	source /opt/ray/bin/activate
+	pip install mysql-connector-python
+
+	mlflow ui --host 0.0.0.0 -p 5000 --default-artifact-root /home/jovyan/MLflow/Artifacts &
+	;;
+    UI)
+	source /opt/ray/bin/activate
+	pip install mysql-connector-python
+
+	mlflow ui --host 0.0.0.0 -p 5000 --backend-store-uri mysql+mysqlconnector://mlflow:mlflow@mariadb.systeme-solaire.espace:3306/mlflow --default-artifact-root /home/jovyan/MLflow/Artifacts &
+	;;
+    localLS)
+	mlflow experiments search -v all
+	;;
+    LS)
+	export MLFLOW_TRACKING_URI=mysql+mysqlconnector://mlflow:mlflow@mariadb.systeme-solaire.espace:3306/mlflow
+	mlflow experiments search -v all
+	;;
+    *)
+	usage "$0"
+esac
