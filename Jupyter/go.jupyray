@@ -4,6 +4,6 @@ RAM=$(free -m | sed -rn -e 's/^Mem:\s+([0-9]+)\s+.*/\1/p')
 SHM=$(( $RAM / 3 ))
 echo SHM Size = $SHM
 
-IMG=edrusb/jupyray:3.2
+IMG=edrusb/jupyray-mlflow:3.3
 
 exec docker run -d -p 8888:8888 -p 8265:8265 -p 8000:8000 -p 5000:5000 --name myjupy --restart=unless-stopped --shm-size=${SHM}mb -e JUPYTER_ENABLE_LAB=yes -v /home/denis/Docker-Images/jupyter/persist:/home/jovyan "$IMG"

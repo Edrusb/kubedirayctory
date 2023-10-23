@@ -4,7 +4,7 @@ help:
 	@echo "make VER=1.8 push"
 
 build:
-	docker build -t edrusb/jupyray-standaloe:$(VER) .
+	docker build -t edrusb/jupyray-mlflow:$(VER) .
 
 push: build
-	docker push edrusb/jupyray-standalone:$(VER)
+	docker push edrusb/jupyray-mlflow:$(VER)
