@@ -1,7 +1,4 @@
 #!/bin/bash
 
 su - jovyan -c "/home/jovyan/MLflow/mlflow-run-ui localUI &"
-
-mkdir -p /run/sshd
-exec /usr/sbin/sshd -D
-
+su - jovyan -c "source /opt/ray/bin/activate && jupyter lab --ip=0.0.0.0"

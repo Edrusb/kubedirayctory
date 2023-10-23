@@ -34,8 +34,6 @@ RUN groupadd lab
 RUN useradd -g lab -c "jupyter lab user" -u 1000 -M jovyan
 RUN mkdir /home/jovyan && chown jovyan:lab /home/jovyan
 RUN chsh jovyan -s /bin/bash
-COPY ray-demo.ipynb /home/jovyan
-RUN chown jovyan:lab /home/jovyan/ray-demo.ipynb
 
 # allowing members of group lab to install anything in the venv "ray"
 RUN find /opt/ray -type d -exec chmod g+w {} \;
@@ -52,18 +50,16 @@ RUN apt-get install rsync -y
 RUN apt-get install bash -y
 RUN cd /usr/bin && ln -s python3 python
 
-# the "startscript" analyses the cluster conf and launches ray either as head or worker
-RUN mkdir /root/appconfig
-COPY startscript /root/appconfig
-RUN chmod 0755 /root/appconfig/startscript
-RUN tar -C /root -czf /root/appconfig.tgz appconfig
-RUN rm -rf /root/appconfig
+## the "startscript" analyses the cluster conf and launches ray either as head or worker
+# RUN mkdir /root/appconfig
+# COPY startscript /root/appconfig
+# RUN chmod 0755 /root/appconfig/startscript
+# RUN tar -C /root -czf /root/appconfig.tgz appconfig
+# RUN rm -rf /root/appconfig
 
 # jupyter is replaced by ssh for pod start as authkey is known later
 RUN apt-get install openssh-server -y
 RUN apt-get install expect -y
-COPY jupypass /opt/ray/bin
-RUN chmod 0755 /opt/ray/bin/jupypass
 
 # installing scikit-learn
 RUN . /opt/ray/bin/activate && pip install numpy scipy modin
