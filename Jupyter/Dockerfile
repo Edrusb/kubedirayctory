@@ -59,8 +59,7 @@ RUN . /opt/ray/bin/activate && pip install jq
 ENV JUPYTER_ENABLE_LAB yes
 RUN . /opt/ray/bin/activate && pip install jupyterlab
 
-COPY jupypass /opt/ray/bin
-RUN chmod 0755 /opt/ray/bin/jupypass
+COPY --chown=jovyan:lab --chmod=0755 jupypass /opt/ray/bin
 
 # installing scikit-learn
 RUN . /opt/ray/bin/activate && pip install numpy scipy modin
@@ -73,9 +72,7 @@ RUN . /opt/ray/bin/activate && pip --no-cache-dir install --force-reinstall -I p
 RUN . /opt/ray/bin/activate && pip install mlflow
 RUN . /opt/ray/bin/activate && pip install mysql-connector-python
 RUN mkdir /home/jovyan/MLflow && chown jovyan:lab /home/jovyan/MLflow
-COPY mlflow-run-ui /home/jovyan/MLflow
-RUN chown jovyan:lab /home/jovyan/MLflow/mlflow-run-ui
-RUN chmod +x /home/jovyan/MLflow/mlflow-run-ui
+COPY --chown=jovyan:lab --chmod=0755 mlflow-run-ui /home/jovyan/MLflow
 
 ###################################
 
