@@ -34,16 +34,16 @@ RUN apt-get install libyaml-cpp-dev libyaml-dev -y
 RUN apt-get install openssh-server -y
 RUN apt-get install expect -y
 
-# installing Ray Virtual Environment
-RUN python3 -m venv /opt/ray
-RUN chgrp -R lab /opt/ray
-RUN find /opt/ray -type d -exec chmod g+w {} \;
-
 # non root user setup
 RUN groupadd lab
 RUN useradd -g lab -c "jupyter lab user" -u 1000 -M jovyan
 RUN mkdir /home/jovyan && chown jovyan:lab /home/jovyan
 RUN chsh jovyan -s /bin/bash
+
+# installing Ray Virtual Environment
+RUN python3 -m venv /opt/ray
+RUN chgrp -R lab /opt/ray
+RUN find /opt/ray -type d -exec chmod g+w {} \;
 
 #### END OF OS SYSTEM INSTALLS
 
